@@ -7,6 +7,7 @@ import Lab5 from "./src/Lab5/index.js";
 import UserRoutes from "./src/Kambaz/Users/routes.js";
 import CourseRoutes from "./src/Kambaz/Courses/routes.js";
 import ModuleRoutes from "./src/Kambaz/Modules/routes.js";
+import AssignmentRoutes from "./src/Kambaz/Assignments/routes.js";
 
 const app = express();
 app.use(
@@ -35,4 +36,5 @@ Hello(app);
 UserRoutes(app);
 CourseRoutes(app);
 ModuleRoutes(app);
+AssignmentRoutes(app);
 app.listen(process.env.PORT || 4000);
