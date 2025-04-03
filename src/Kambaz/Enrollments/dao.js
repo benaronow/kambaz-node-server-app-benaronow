@@ -4,13 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 export function findEnrollments() {
   return Database.enrollments;
 }
-export function enrollUserInCourse(userId, courseId) {
+export function enrollUserInCourse(enrollment) {
   const { enrollments } = Database;
-  enrollments.push({ _id: uuidv4(), user: userId, course: courseId });
+  const newEnrollment = {
+    _id: uuidv4(),
+    user: enrollment.user,
+    course: enrollment.course,
+  };
+  enrollments.push(newEnrollment);
+  return newEnrollment;
 }
-export function unenrollUserInCourse(enrollment) {
+export function unenrollUserInCourse(enrollmentId) {
   const { enrollments } = Database;
-  Database.enrollments = enrollments.filter(
-    (e) => !(e.user === enrollment.user && e.course === enrollment.course)
-  );
+  Database.enrollments = enrollments.filter((e) => e._id !== enrollmentId);
 }
