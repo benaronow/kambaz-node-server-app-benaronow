@@ -1,18 +1,33 @@
 import model from "./model.js";
 import { v4 as uuidv4 } from "uuid";
 
-const POP_FIELDS = [
+const ALL_POP_FIELDS = [
   "author",
-  "type",
-  "folder",
+  "folders",
+  {
+    path: "followUps",
+    populate: [
+      "author",
+      {
+        path: "replies",
+        populate: ["author"],
+      },
+    ],
+  },
+];
+
+const ID_POP_FIELDS = [
+  "author",
+  "pType",
+  "folders",
   "endorser",
   {
     path: "studentAnswer",
-    populate: ["author", "endorser", "thanks"],
+    populate: ["author", "endorser"],
   },
   {
     path: "instructorAnswer",
-    populate: ["author", "endorser", "thanks"],
+    populate: ["author", "endorser"],
   },
   {
     path: "followUps",
@@ -20,22 +35,22 @@ const POP_FIELDS = [
       "author",
       {
         path: "replies",
-        populate: ["author", "helpful"],
+        populate: ["author"],
       },
-      "helpful",
     ],
   },
 ];
 
-export const createPost = (post) => {
+export const createPost = async (post) => {
   const newPost = { ...post, _id: uuidv4() };
-  return model.create(newPost);
+  const doc = await model.create(newPost);
+  return doc.populate("author");
 };
 
-export const findAllPosts = () => model.find().populate(POP_FIELDS);
+export const findAllPosts = () => model.find().populate(ALL_POP_FIELDS);
 
 export const findPostById = (postId) =>
-  model.findById(postId).populate(POP_FIELDS);
+  model.findById(postId).populate(ID_POP_FIELDS);
 
 export const updatePost = (postId, post) =>
   model.updateOne({ _id: postId }, { $set: post });

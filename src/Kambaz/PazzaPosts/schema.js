@@ -5,31 +5,24 @@ const schema = new mongoose.Schema(
     text: String,
     author: { type: String, ref: "UserModel", required: true },
     date: Date,
-    type: {
+    pType: {
       type: String,
       enum: ["QUESTION", "NOTE"],
       default: "QUESTION",
     },
+    for: {
+      type: String,
+      enum: ["ALL", "INSTRUCTORS"],
+      default: "ALL",
+    },
     title: String,
     pinned: Boolean,
-    folder: {
-      type: String,
-      enum: [
-        "HW1",
-        "HW2",
-        "hHW",
-        "HW4",
-        "HW5",
-        "HW6",
-        "PROJECT",
-        "EXAM",
-        "LOGISTICS",
-        "OTHER",
-        "OFFICE_HOURS",
-        "",
-      ],
-      default: "",
-    },
+    folders: [
+      {
+        type: String,
+        ref: "PazzaFolderModel",
+      },
+    ],
     views: [{ type: String, ref: "UserModel" }],
     endorser: { type: String, ref: "UserModel" },
     studentAnswer: {
@@ -57,14 +50,16 @@ const schema = new mongoose.Schema(
           text: String,
           author: { type: String, ref: "UserModel", required: true },
           date: Date,
-          replies: {
-            type: {
-              text: String,
-              author: { type: String, ref: "UserModel", required: true },
-              date: Date,
-              helpful: [{ type: String, ref: "UserModel" }],
+          replies: [
+            {
+              type: {
+                text: String,
+                author: { type: String, ref: "UserModel", required: true },
+                date: Date,
+                helpful: [{ type: String, ref: "UserModel" }],
+              },
             },
-          },
+          ],
           resolved: Boolean,
           helpful: [{ type: String, ref: "UserModel" }],
         },
