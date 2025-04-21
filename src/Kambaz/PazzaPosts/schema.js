@@ -10,11 +10,7 @@ const schema = new mongoose.Schema(
       enum: ["QUESTION", "NOTE"],
       default: "QUESTION",
     },
-    for: {
-      type: String,
-      enum: ["ALL", "INSTRUCTORS"],
-      default: "ALL",
-    },
+    for: [String],
     title: String,
     pinned: Boolean,
     folders: [
@@ -65,6 +61,7 @@ const schema = new mongoose.Schema(
         },
       },
     ],
+    course: { type: String, ref: "CourseModel" },
   },
   { collection: "pazzaPosts" }
 );
