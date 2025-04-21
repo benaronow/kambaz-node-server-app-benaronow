@@ -44,7 +44,7 @@ const ID_POP_FIELDS = [
 export const createPost = async (post) => {
   const newPost = { ...post, _id: uuidv4() };
   const doc = await model.create(newPost);
-  return doc.populate("author");
+  return doc.populate(["author", "folders"]);
 };
 
 export const findAllPosts = () => model.find().populate(ALL_POP_FIELDS);
